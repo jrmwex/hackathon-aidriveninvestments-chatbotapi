@@ -1,0 +1,29 @@
+[
+  {
+    "ContainingType": "SemanticKernelCoreWebAPI.Controllers.ChatCompletionAgentController",
+    "Method": "GetAsync",
+    "RelativePath": "ChatCompletionAgent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userInput",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SemanticKernelCoreWebAPI.ChatCompletion, SemanticKernelCoreWebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetChatResponse"
+  }
+]
