@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj": {}
+    "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatbotapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj": {
+    "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatbotapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatbotapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj",
         "projectName": "SemanticKernelCoreWebAPI",
-        "projectPath": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj",
+        "projectPath": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatbotapi\\SemanticKernelCoreWebAPI\\SemanticKernelCoreWebAPI.csproj",
         "packagesPath": "C:\\Users\\W432721\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatapi\\SemanticKernelCoreWebAPI\\obj\\",
+        "outputPath": "C:\\Users\\W432721\\source\\repos\\hackathon-aidriveninvestments-chatbotapi\\SemanticKernelCoreWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

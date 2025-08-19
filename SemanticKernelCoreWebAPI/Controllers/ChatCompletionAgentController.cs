@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
+using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace SemanticKernelCoreWebAPI.Controllers
 {
@@ -8,15 +10,17 @@ namespace SemanticKernelCoreWebAPI.Controllers
     [Route("[controller]")]
     public class ChatCompletionAgentController : ControllerBase
     {
-        private readonly ILogger<ChatCompletionAgentController> _logger;
+        private readonly IMemoryCache _memoryCache;
+        private const string ChatHistoryCacheKey = "ChatHistory";
 
-        private readonly string modelId = "azure-gpt-4o-mini";
-        private readonly string endpoint = "https://aips-ai-gateway.ue1.dev.ai-platform.int.wexfabric.com/";
-        private readonly string apiKey = "";
 
-        public ChatCompletionAgentController(ILogger<ChatCompletionAgentController> logger)
+        private const string modelId = "azure-gpt-4o-mini";
+        private const string endpoint = "https://aips-ai-gateway.ue1.dev.ai-platform.int.wexfabric.com/";
+        private const string apiKey = "";
+
+        public ChatCompletionAgentController(IMemoryCache memoryCache)
         {
-            _logger = logger;
+            _memoryCache = memoryCache;
         }
 
         [HttpGet(Name = "GetChatResponse")]
@@ -30,6 +34,12 @@ namespace SemanticKernelCoreWebAPI.Controllers
                             );
             var kernel = builder.Build();
 
+            var localChatHistory = new ChatHistory();
+            localChatHistory.AddUserMessage(userInput);
+            AddToMemoryCache(localChatHistory);
+
+            var cachedChatHistory = _memoryCache.Get<ChatHistory>(ChatHistoryCacheKey) ?? localChatHistory;
+
             ChatCompletionAgent agent =
                 new()
                 {
@@ -40,8 +50,12 @@ namespace SemanticKernelCoreWebAPI.Controllers
 
             var chatCompletion = new List<ChatCompletion>();
 
-            await foreach (var response in agent.InvokeAsync(userInput))
+            await foreach (var response in agent.InvokeAsync(cachedChatHistory))
             {
+                var responseChatHistory = new ChatHistory();
+                responseChatHistory.AddAssistantMessage(response.Message.Content);
+                AddToMemoryCache(responseChatHistory);
+
                 chatCompletion.Add(new ChatCompletion
                 {
                     MessageContent = response.Message.Content
@@ -49,6 +63,25 @@ namespace SemanticKernelCoreWebAPI.Controllers
             }
 
             return chatCompletion;
+        }
+
+        private void AddToMemoryCache(ChatHistory chatHistory)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Cache for 5 minutes
+            if (_memoryCache.TryGetValue(ChatHistoryCacheKey, out ChatHistory cacheChatHistory))
+            {
+                if (cacheChatHistory != null)
+                {
+                    ChatMessageContent[] array = new ChatMessageContent[chatHistory.Count];
+                    chatHistory.CopyTo(array, 0);
+                    cacheChatHistory.AddRange(array);
+                    _memoryCache.Set(ChatHistoryCacheKey, cacheChatHistory, cacheEntryOptions);
+                }
+            }
+            else
+            {
+                _memoryCache.Set(ChatHistoryCacheKey, chatHistory, cacheEntryOptions);
+            }
         }
     }
 }
